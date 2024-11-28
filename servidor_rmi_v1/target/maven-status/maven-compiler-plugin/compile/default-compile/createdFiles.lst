@@ -1,6 +1,6 @@
-run.class
 com\mycompany\servidor_rmi_v1\Servidor_rmi_v1.class
 pacote\rmi_implementation.class
+pacote\run.class
 pacote\rmi_interface.class
 pacote\server$1.class
 pacote\server.class

@@ -19,7 +19,7 @@ public class cliente {
     public static void main(String[] args){
         try{
             rmi_interface objRmi = (rmi_interface)
-                Naming.lookup("rmi://127.0.0.1:6666/servidor");
+                Naming.lookup("rmi://200.128.141.93:6666/servidor");
             JOptionPane.showMessageDialog(null, objRmi.Somar(100, 200));
         } catch (HeadlessException | MalformedURLException | NotBoundException | RemoteException e) {
             JOptionPane.showMessageDialog(null, "Erro: " + e.getMessage());
