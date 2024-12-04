@@ -12,6 +12,7 @@ import java.awt.MenuItem;
 import java.awt.PopupMenu;
 import java.awt.SystemTray;
 import java.awt.TrayIcon;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
@@ -47,7 +48,7 @@ public class server {
             
             mnuActions = new Menu("Ações");
             itemStart = new CheckboxMenuItem("On/Off");
-            itemStop = new MenuItem("Parar");
+            itemStop = new MenuItem("Encerrar");
             itemAbout = new MenuItem("Sobre");
             
             mnuActions.add(itemStart);
@@ -81,6 +82,13 @@ public class server {
                     }
                 }
                 
+            });
+            
+            itemStop.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    System.exit(0);
+                }
             });
             
             try{

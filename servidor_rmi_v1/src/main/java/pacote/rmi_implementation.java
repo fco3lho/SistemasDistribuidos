@@ -18,13 +18,52 @@ public class rmi_implementation extends UnicastRemoteObject implements rmi_inter
     }
     
     @Override
-    public String Somar(int v1, int v2) throws RemoteException {
+    public String Somar(double v1, double v2) throws RemoteException {
         String retorno = "Não foi possível somar.";
         try{
-            retorno = "A soma é: " + (v1+v2);
+            retorno = "O resultado da soma é: " + (v1+v2);
         } catch (Exception e){
             throw new RemoteException("Erro: " + e.getMessage());
         }
         return retorno;
-    }    
+    }
+    
+    @Override
+    public String Subtrair(double v1, double v2) throws RemoteException {
+        String retorno = "Não foi possível subtrair.";
+        try{
+            retorno = "O resultado da subtração é: " + (v1-v2);
+        } catch (Exception e){
+            throw new RemoteException("Erro: " + e.getMessage());
+        }
+        return retorno;
+    }
+    
+    @Override
+    public String Multiplicar(double v1, double v2) throws RemoteException {
+        String retorno = "Não foi possível multiplicar.";
+        try{
+            retorno = "O resultado da multiplicação é: " + (v1*v2);
+        } catch(Exception e){
+            throw new RemoteException("Erro: " + e.getMessage());
+        }
+        return retorno;
+    }
+    
+    @Override
+    public String Dividir(double v1, double v2) throws RemoteException{
+        String retorno = "Não foi possível dividir.";
+        
+        if(v2 == 0){
+            retorno = "O denominador não pode ser 0.";
+            return retorno;
+        }
+        
+        try{
+            retorno = "O resultado da divisão é: " + (v1/v2);
+        } catch(Exception e){
+            throw new RemoteException("Erro: " + e.getMessage());
+        }
+        return retorno;
+    }
 }
