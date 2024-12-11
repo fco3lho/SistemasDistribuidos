@@ -4,10 +4,14 @@
  */
 package pacote;
 
+import java.rmi.Remote;
+import java.rmi.RemoteException;
+
 /**
  *
  * @author Felipe Campos
  */
-public interface rmiWebInterface {
-    
+public interface rmiWebInterface extends Remote {
+    public boolean gravaMsg(String msg) throws RemoteException;
+    public String recuperaMsgs() throws RemoteException;
 }

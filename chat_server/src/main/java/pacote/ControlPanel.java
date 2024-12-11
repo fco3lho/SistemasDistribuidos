@@ -4,6 +4,14 @@
  */
 package pacote;
 
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Felipe Campos
@@ -16,6 +24,9 @@ public class ControlPanel extends javax.swing.JFrame {
     public ControlPanel() {
         initComponents();
     }
+    
+    Registry reg;
+    rmiWebInterface objRmi;
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -119,18 +130,45 @@ public class ControlPanel extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnDesktopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDesktopActionPerformed
-        // TODO add your handling code here:
+        if(btnDesktop.isSelected()){
+            btnDesktop.setText("Desativar");
+        }else{
+            btnDesktop.setText("Ativar");
+        }
     }//GEN-LAST:event_btnDesktopActionPerformed
 
     private void btnPublicidadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPublicidadeActionPerformed
-        // TODO add your handling code here:
+        if(btnPublicidade.isSelected()){
+            btnPublicidade.setText("Desativar");
+        }else{
+            btnPublicidade.setText("Ativar");
+        }
     }//GEN-LAST:event_btnPublicidadeActionPerformed
 
     private void btnWebActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnWebActionPerformed
         if(btnWeb.isSelected()){
-            btnWeb.setText("Desativar");
-        }else{
-            btnWeb.setText("Ativar");
+            try{
+                this.reg = LocateRegistry.createRegistry(6666);
+                this.objRmi = new rmiWebImplementation();
+                this.reg.rebind("servidorWebChat", objRmi);
+                JOptionPane.showMessageDialog(null, "Servidor iniciado.");
+                btnWeb.setText("Desativar");
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "Erro ativando servidor RMI: " + e.getMessage());
+                e.printStackTrace();
+            }
+        }
+        else{
+            try{
+                this.reg.unbind("servidorWebChat");
+                UnicastRemoteObject.unexportObject(this.objRmi, true);
+                UnicastRemoteObject.unexportObject(this.reg, true);
+                JOptionPane.showMessageDialog(null, "Servidor parado");
+                btnWeb.setText("Ativar");
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "Erro parando servidor RMI: " + e.getMessage());
+                e.printStackTrace();
+            }
         }
     }//GEN-LAST:event_btnWebActionPerformed
 
