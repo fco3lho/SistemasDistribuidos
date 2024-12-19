@@ -6,6 +6,10 @@
         <title>JSP Page</title>
     </head>
     <body>
+        <%
+            session.setAttribute("nome", null);
+            session.setAttribute("pontuacao", 0);
+        %>
         <h1>Quizz</h1>
         <form action="perguntas.jsp" method="post">
             <label for="nome">Digite seu nome:</label>

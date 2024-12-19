@@ -72,5 +72,9 @@
             }
         %>
     </table>
+
+    <form action="index.jsp">
+        <button type="submit">Voltar à Página Inicial</button>
+    </form>
 </body>
 </html>
