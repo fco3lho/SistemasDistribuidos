@@ -64,7 +64,16 @@
                 msg += "<img src=\""+request.getParameter("cbEmoji")+"\" height=\"20\" width=\"20\">";
             }
             msg += "<br>";
-            out.print(msg);     
+            
+            try{
+                rmiWebInterface objRmi = (rmiWebInterface) Naming.lookup("rmi://127.0.0.1:6666/servidorWebChat");
+                if(!objRmi.gravaMsg(msg)){
+                    out.print("Erro salvando a mensagem.");
+                }
+            } catch (Exception e){
+                out.print("Erro no servidor ao salvar: " + e.getMessage());
+                e.printStackTrace();
+            }
         }
         %>
     </body>

@@ -17,6 +17,6 @@ public interface QuizService extends Remote {
     public boolean atualizaRanking(String msg) 
             throws RemoteException;
         
-        public List<String[]> recuperaRanking()
+    public List<String[]> recuperaRanking()
             throws RemoteException;
 }
