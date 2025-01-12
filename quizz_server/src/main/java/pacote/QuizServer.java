@@ -14,6 +14,8 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -23,9 +25,37 @@ import java.util.TreeMap;
  * @author Felipe Campos
  */
 public class QuizServer extends UnicastRemoteObject implements QuizService {
+    
+    private Map<Integer, String> perguntas = null;
+    private Map<Integer, List<String>> alternativas = null;
+    private Map<Integer, String> respostasCorretas = null;
 
     public QuizServer() throws RemoteException{
         super();
+        
+        perguntas = new HashMap<>();
+        alternativas = new HashMap<>();
+        respostasCorretas = new HashMap<>();
+
+        perguntas.put(1, "Qual é a capital do Brasil?");
+        alternativas.put(1, List.of("Brasilia", "Rio de Janeiro", "Sao Paulo", "Salvador"));
+        respostasCorretas.put(1, "Brasilia");
+
+        perguntas.put(2, "Qual é o planeta mais próximo do Sol?");
+        alternativas.put(2, List.of("Mercurio", "Venus", "Terra", "Marte"));
+        respostasCorretas.put(2, "Mercurio");
+
+        perguntas.put(3, "Quem é o protagonista da série 'Todo mundo odeia o Chris'?");
+        alternativas.put(3, List.of("Travis Flory", "Terry Crews", "Vincent Martella", "Tyler James"));
+        respostasCorretas.put(3, "Tyler James");
+
+        perguntas.put(4, "Qual dos carros é uma Ferrari");
+        alternativas.put(4, List.of("296 GTB", "Jesko", "P1", "911 GT3"));
+        respostasCorretas.put(4, "296 GTB");
+
+        perguntas.put(5, "Qual a capital dos EUA?");
+        alternativas.put(5, List.of("Washington", "Los Angeles", "New York", "Detroit"));
+        respostasCorretas.put(5, "Washington");
     }
 
     @Override
@@ -68,5 +98,22 @@ public class QuizServer extends UnicastRemoteObject implements QuizService {
         ranking.sort((a, b) -> Integer.compare(Integer.parseInt(b[1]), Integer.parseInt(a[1])));
         
         return ranking;
+    }
+
+    @Override
+    public String getPergunta(int numero) throws RemoteException {
+        return perguntas.getOrDefault(numero, "Pergunta não encontrada");
+    }
+
+    @Override
+    public List<String> getAlternativas(int numero) throws RemoteException {
+        List<String> lista = new ArrayList<>(alternativas.getOrDefault(numero, Collections.emptyList()));
+        Collections.shuffle(lista);
+        return lista;
+    }
+
+    @Override
+    public boolean verificarResposta(int numero, String resposta) throws RemoteException {
+        return resposta != null && resposta.equals(respostasCorretas.get(numero));
     }
 }

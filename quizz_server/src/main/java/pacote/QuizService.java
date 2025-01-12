@@ -14,9 +14,13 @@ import java.util.Map;
  * @author Felipe Campos
  */
 public interface QuizService extends Remote {
-    public boolean atualizaRanking(String msg) 
-            throws RemoteException;
-        
-    public List<String[]> recuperaRanking()
-            throws RemoteException;
+    public boolean atualizaRanking(String msg) throws RemoteException;
+
+    public List<String[]> recuperaRanking() throws RemoteException;
+
+    public String getPergunta(int numero) throws RemoteException;
+
+    public List<String> getAlternativas(int numero) throws RemoteException;
+
+    public boolean verificarResposta(int numero, String resposta) throws RemoteException;
 }
