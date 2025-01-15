@@ -66,7 +66,7 @@ public class QuizServer extends UnicastRemoteObject implements QuizService {
             File arquivo = new File("C:\\SistemasDistribuidos\\Quizz\\ranking.txt");
             FileWriter escritor = new FileWriter(arquivo, true);
 
-            escritor.write(msg);
+            escritor.write(msg + "\n");
             escritor.close();
             
             bret = true;

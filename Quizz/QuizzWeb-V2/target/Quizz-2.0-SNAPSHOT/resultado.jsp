@@ -22,7 +22,7 @@
         }
 
         // Salva a pontuação no arquivo de ranking
-        String msg = nome + ":" + pontuacao + "\n";
+        String msg = nome + ":" + pontuacao;
         try {
             QuizService objRmi = (QuizService)Naming.lookup("rmi://127.0.0.1:6789/servidorQuiz");
             
