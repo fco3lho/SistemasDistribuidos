@@ -3,17 +3,19 @@ package pacote;
 import java.rmi.Naming;
 import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 public class QuizDesktop extends javax.swing.JFrame {
 
     private QuizService servidor;
     private int perguntaAtual = 1;
     private int pontuacao = 0;
+    private String nomeJogador;
 
     public QuizDesktop() {
         initComponents();
         conectarServidor();
-        carregarPergunta();
+        telaInicial();
     }
 
     private void conectarServidor() {
@@ -21,7 +23,17 @@ public class QuizDesktop extends javax.swing.JFrame {
             servidor = (QuizService) Naming.lookup("rmi://127.0.0.1:6789/servidorQuiz");
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Erro ao conectar com o servidor: " + e.getMessage());
+            System.exit(0);
         }
+    }
+
+    private void telaInicial() {
+        nomeJogador = JOptionPane.showInputDialog(this, "Digite seu nome:", "Bem-vindo ao Quiz!", JOptionPane.QUESTION_MESSAGE);
+        if (nomeJogador == null || nomeJogador.trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Nome inválido. O programa será encerrado.");
+            System.exit(0);
+        }
+        carregarPergunta();
     }
 
     private void carregarPergunta() {
@@ -59,8 +71,7 @@ public class QuizDesktop extends javax.swing.JFrame {
 
             perguntaAtual++;
             if (perguntaAtual > 5) {
-                JOptionPane.showMessageDialog(this, "Quiz finalizado! Sua pontuação: " + pontuacao);
-                System.exit(0);
+                finalizarQuiz();
             } else {
                 carregarPergunta();
             }
@@ -69,16 +80,46 @@ public class QuizDesktop extends javax.swing.JFrame {
         }
     }
 
+    private void finalizarQuiz() {
+        try {
+            servidor.atualizaRanking(nomeJogador + ":" + pontuacao);
+            mostrarRanking();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Erro ao finalizar quiz: " + e.getMessage());
+        }
+    }
+
+    private void mostrarRanking() {
+        try {
+            List<String[]> ranking = servidor.recuperaRanking();
+            DefaultTableModel model = (DefaultTableModel) tblRanking.getModel();
+            model.setRowCount(0); // Limpa a tabela
+
+            for (String[] jogador : ranking) {
+                model.addRow(new Object[]{jogador[0], jogador[1]});
+            }
+
+            pnlQuiz.setVisible(false);
+            pnlRanking.setVisible(true);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Erro ao carregar ranking: " + e.getMessage());
+        }
+    }
+
     // Código gerado automaticamente pelo NetBeans para a GUI:
     @SuppressWarnings("unchecked")
     private void initComponents() {
         buttonGroup1 = new javax.swing.ButtonGroup();
+        pnlQuiz = new javax.swing.JPanel();
         lblPergunta = new javax.swing.JLabel();
         rbAlternativa1 = new javax.swing.JRadioButton();
         rbAlternativa2 = new javax.swing.JRadioButton();
         rbAlternativa3 = new javax.swing.JRadioButton();
         rbAlternativa4 = new javax.swing.JRadioButton();
         btnResponder = new javax.swing.JButton();
+        pnlRanking = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblRanking = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Quiz Desktop");
@@ -96,26 +137,26 @@ public class QuizDesktop extends javax.swing.JFrame {
         btnResponder.setText("Responder");
         btnResponder.addActionListener(evt -> verificarResposta());
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+        javax.swing.GroupLayout pnlQuizLayout = new javax.swing.GroupLayout(pnlQuiz);
+        pnlQuiz.setLayout(pnlQuizLayout);
+        pnlQuizLayout.setHorizontalGroup(
+            pnlQuizLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlQuizLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(pnlQuizLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblPergunta, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
                     .addComponent(rbAlternativa1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(rbAlternativa2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(rbAlternativa3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(rbAlternativa4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
+                    .addGroup(pnlQuizLayout.createSequentialGroup()
                         .addComponent(btnResponder)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+        pnlQuizLayout.setVerticalGroup(
+            pnlQuizLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlQuizLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblPergunta)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -131,6 +172,52 @@ public class QuizDesktop extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        tblRanking.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {},
+            new String [] {"Jogador", "Pontuação"}
+        ));
+        jScrollPane1.setViewportView(tblRanking);
+
+        javax.swing.GroupLayout pnlRankingLayout = new javax.swing.GroupLayout(pnlRanking);
+        pnlRanking.setLayout(pnlRankingLayout);
+        pnlRankingLayout.setHorizontalGroup(
+            pnlRankingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlRankingLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        pnlRankingLayout.setVerticalGroup(
+            pnlRankingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlRankingLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        pnlRanking.setVisible(false);
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(pnlQuiz, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(pnlRanking, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(pnlQuiz, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(pnlRanking, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
         pack();
         setLocationRelativeTo(null);
     }
@@ -141,9 +228,13 @@ public class QuizDesktop extends javax.swing.JFrame {
 
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JButton btnResponder;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblPergunta;
+    private javax.swing.JPanel pnlQuiz;
+    private javax.swing.JPanel pnlRanking;
     private javax.swing.JRadioButton rbAlternativa1;
     private javax.swing.JRadioButton rbAlternativa2;
     private javax.swing.JRadioButton rbAlternativa3;
     private javax.swing.JRadioButton rbAlternativa4;
+    private javax.swing.JTable tblRanking;
 }
