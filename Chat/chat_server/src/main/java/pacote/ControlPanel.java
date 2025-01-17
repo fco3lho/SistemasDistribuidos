@@ -37,10 +37,8 @@ public class ControlPanel extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        lblDesktop = new javax.swing.JLabel();
         lblPublicidade = new javax.swing.JLabel();
         lblWeb = new javax.swing.JLabel();
-        btnDesktop = new javax.swing.JToggleButton();
         btnPublicidade = new javax.swing.JToggleButton();
         btnWeb = new javax.swing.JToggleButton();
 
@@ -48,26 +46,13 @@ public class ControlPanel extends javax.swing.JFrame {
         setTitle("Control Panel");
         setName("frmControlPanel"); // NOI18N
 
-        lblDesktop.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        lblDesktop.setText("Chat Desktop:");
-        lblDesktop.setName("lblDesktop"); // NOI18N
-
         lblPublicidade.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        lblPublicidade.setText("Publicidade:");
+        lblPublicidade.setText("Publicidade");
         lblPublicidade.setName("lblPublicidade"); // NOI18N
 
         lblWeb.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        lblWeb.setText("Chat WEB:");
+        lblWeb.setText("Servidor");
         lblWeb.setName("lblWeb"); // NOI18N
-
-        btnDesktop.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        btnDesktop.setText("Ativar");
-        btnDesktop.setName("btnDesktop"); // NOI18N
-        btnDesktop.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnDesktopActionPerformed(evt);
-            }
-        });
 
         btnPublicidade.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         btnPublicidade.setText("Ativar");
@@ -91,51 +76,33 @@ public class ControlPanel extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(6, 6, 6)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(lblPublicidade)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnPublicidade, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(lblDesktop)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 101, Short.MAX_VALUE)
-                        .addComponent(btnDesktop, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(lblWeb)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnWeb, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(15, 15, 15))
+                    .addComponent(lblPublicidade)
+                    .addComponent(lblWeb))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 62, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnWeb, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnPublicidade, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(26, 26, 26))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(23, 23, 23)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGap(19, 19, 19)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(lblWeb)
                     .addComponent(btnWeb, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(63, 63, 63)
+                .addGap(28, 28, 28)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(lblDesktop)
-                    .addComponent(btnDesktop, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 69, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblPublicidade, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnPublicidade, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(31, 31, 31))
+                    .addComponent(lblPublicidade)
+                    .addComponent(btnPublicidade, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(28, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void btnDesktopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDesktopActionPerformed
-        if(btnDesktop.isSelected()){
-            btnDesktop.setText("Desativar");
-        }else{
-            btnDesktop.setText("Ativar");
-        }
-    }//GEN-LAST:event_btnDesktopActionPerformed
 
     private void btnPublicidadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPublicidadeActionPerformed
         if(btnPublicidade.isSelected()){
@@ -208,10 +175,8 @@ public class ControlPanel extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JToggleButton btnDesktop;
     private javax.swing.JToggleButton btnPublicidade;
     private javax.swing.JToggleButton btnWeb;
-    private javax.swing.JLabel lblDesktop;
     private javax.swing.JLabel lblPublicidade;
     private javax.swing.JLabel lblWeb;
     // End of variables declaration//GEN-END:variables
