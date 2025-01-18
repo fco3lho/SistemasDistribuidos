@@ -29,9 +29,9 @@
             <b>Emoji:</b>
             <select name="cbEmoji">
                 <option value=""> Selecione </option>
-                <option value="images/coracao.png"> ❤️ </option>
+                <option value="images/heart.png"> ❤️ </option>
                 <option value="images/sorrindo.png"> 😀 </option>
-                <option value="images/ok.png"> 👍🏻 </option>
+                <option value="images/joia.png"> 👍🏻 </option>
             </select>
             <input type="submit" name="btnEnviar" value="enviar">
         </form>
@@ -60,7 +60,7 @@
                 msg += " Sussurra: <font size=\"-2\">" + request.getParameter("txtmsg") + "</font>";
             }
             
-            if(!request.getParameter("cbEmoji").toString().equals("")){
+            if(!(request.getParameter("cbEmoji").toString().equals(""))){
                 msg += "<img src=\""+request.getParameter("cbEmoji")+"\" height=\"20\" width=\"20\">";
             }
             msg += "<br>";

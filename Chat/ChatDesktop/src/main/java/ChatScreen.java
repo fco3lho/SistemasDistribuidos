@@ -45,7 +45,11 @@ public class ChatScreen extends javax.swing.JFrame {
         if (message.trim().isEmpty()) return;
 
         try {
-            String formattedMessage = String.format("<b>%s</b>: %s<br>", nickname, message);
+            String userIconPath = "images/default.png";
+            String formattedMessage = String.format(
+                    "<img src='%s' width='40' height='40'> <b>%s</b>: %s<br>",
+                    userIconPath, nickname, message
+            );
             if (!chatServer.gravaMsg(formattedMessage)) {
                 jEditorPane1.setText("Erro ao enviar a mensagem.\n");
             } else {
@@ -60,7 +64,12 @@ public class ChatScreen extends javax.swing.JFrame {
     private void updateMessages() {
         try {
             String messages = chatServer.recuperaMsgs();
-            jEditorPane1.setText("<html><body>" + messages + "</body></html>"); // Atualiza a área do chat com as mensagens
+            String sanitizedMessages = messages
+                    .replaceAll("<img[^>]*>", "")
+                    .replaceAll("</?font[^>]*>", "");
+            
+            
+            jEditorPane1.setText("<html><body>" + sanitizedMessages + "</body></html>"); // Atualiza a área do chat com as mensagens
         } catch (Exception e) {
             jEditorPane1.setText("Erro ao recuperar mensagens: " + e.getMessage() + "\n");
             e.printStackTrace();
