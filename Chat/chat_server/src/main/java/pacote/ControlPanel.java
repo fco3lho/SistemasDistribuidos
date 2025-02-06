@@ -4,13 +4,14 @@
  */
 package pacote;
 
-import java.rmi.RemoteException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -107,7 +108,35 @@ public class ControlPanel extends javax.swing.JFrame {
     private void btnPublicidadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPublicidadeActionPerformed
         if(btnPublicidade.isSelected()){
             btnPublicidade.setText("Desativar");
-        }else{
+            
+            new Thread(() -> {
+                try {
+                    String[] marcas = {"Coca-Cola", "Google", "Americanas"};
+                    InetAddress addr = InetAddress.getByName("239.0.0.1"); // Endereço multicast
+                    DatagramSocket ds = new DatagramSocket(); // Criação do socket para envio
+
+                    while (btnPublicidade.getText() == "Desativar") {
+                        for (String marca : marcas) {
+                            byte[] b = marca.getBytes(); // Converte a marca para bytes
+                            DatagramPacket pkg = new DatagramPacket(b, b.length, addr, 6667); // Cria o pacote a ser enviado
+
+                            ds.send(pkg); // Envia o pacote
+                            System.out.println("Anuncio enviado: " + marca); // Exibe mensagem no console
+
+                            try {
+                                Thread.sleep(2000); // Aguarda 2 segundos antes de enviar o próximo anúncio
+                            } catch (InterruptedException e) {
+                                Thread.currentThread().interrupt();
+                            }
+                        }
+                    }
+                } catch (Exception e) {
+                    SwingUtilities.invokeLater(() -> {
+                        JOptionPane.showMessageDialog(null, e.getMessage()); // Exibe erro caso ocorra
+                    });
+                }
+            }).start();
+        } else {
             btnPublicidade.setText("Ativar");
         }
     }//GEN-LAST:event_btnPublicidadeActionPerformed

@@ -19,7 +19,7 @@
     <body>
         <%
             try {
-                rmiWebInterface objRmi = (rmiWebInterface)Naming.lookup("rmi://127.0.0.1:6666/servidorWebChat");
+                rmiWebInterface objRmi = (rmiWebInterface)Naming.lookup("rmi://localhost:6666/servidorWebChat");
                 out.print(objRmi.recuperaMsgs());
             } catch (Exception e) {
                 out.print("Erro no servidor ao recuperar mesangens: " + e.getMessage());

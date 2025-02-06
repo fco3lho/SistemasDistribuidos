@@ -1,7 +1,12 @@
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.InetAddress;
+import java.net.MulticastSocket;
 import java.rmi.Naming;
+import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import pacote.rmiWebInterface;
 
@@ -30,11 +35,12 @@ public class ChatScreen extends javax.swing.JFrame {
         setTitle("Chat - Usuário: " + nickname);
         connectToServer();
         startMessageUpdater();
+         startMulticastListener();
     }
     
     private void connectToServer() {
         try {
-            chatServer = (rmiWebInterface) Naming.lookup("rmi://127.0.0.1:6666/servidorWebChat");
+            chatServer = (rmiWebInterface) Naming.lookup("rmi://localhost:6666/servidorWebChat");
         } catch (Exception e) {
             jEditorPane1.setText("Erro ao conectar ao servidor: " + e.getMessage() + "\n");
             e.printStackTrace();
@@ -85,6 +91,37 @@ public class ChatScreen extends javax.swing.JFrame {
         });
         timer.start();
     }
+    
+    private void startMulticastListener() {
+        jEditorPane3.setText("<html><body><h2>Anuncios: </h2></body></html>");
+
+        new Thread(() -> {
+            try {
+                MulticastSocket socket = new MulticastSocket(6667);
+                InetAddress group = InetAddress.getByName("239.0.0.1");
+                socket.joinGroup(group);
+
+                byte[] buffer = new byte[1000];
+                DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
+
+                while (true) {
+                    socket.receive(packet);
+                    String message = new String(packet.getData(), 0, packet.getLength());
+
+                    SwingUtilities.invokeLater(() -> {
+                        jEditorPane3.setText("<html><body><h2>Anuncios: " + message + "</h2></body></html>");
+                        jEditorPane3.revalidate(); // Força atualização do layout
+                        jEditorPane3.repaint();    // Redesenha o componente
+                    });
+                }
+            } catch (IOException e) {
+                SwingUtilities.invokeLater(() -> 
+                    jEditorPane3.setText("Erro ao recuperar anuncios: " + e.getMessage() + "\n")
+                );
+                e.printStackTrace();
+            }
+        }).start();
+    }
 
     private ChatScreen() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
@@ -99,10 +136,18 @@ public class ChatScreen extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jEditorPane2 = new javax.swing.JEditorPane();
         jTextField1 = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         jEditorPane1 = new javax.swing.JEditorPane();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        jEditorPane3 = new javax.swing.JEditorPane();
+
+        jEditorPane2.setEditable(false);
+        jEditorPane2.setContentType("text/html"); // NOI18N
+        jScrollPane3.setViewportView(jEditorPane2);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Chat - Usuário: [nickname]");
@@ -124,35 +169,38 @@ public class ChatScreen extends javax.swing.JFrame {
         jEditorPane1.setContentType("text/html"); // NOI18N
         jScrollPane2.setViewportView(jEditorPane1);
 
+        jEditorPane3.setEditable(false);
+        jEditorPane3.setContentType("text/html"); // NOI18N
+        jScrollPane4.setViewportView(jEditorPane3);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(30, 30, 30)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 447, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jButton1)
-                .addContainerGap(33, Short.MAX_VALUE))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addContainerGap(29, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 538, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(33, Short.MAX_VALUE)))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 537, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 447, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(18, 18, 18)
+                            .addComponent(jButton1))))
+                .addContainerGap(32, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(356, Short.MAX_VALUE)
+                .addGap(16, 16, 16)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 323, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton1))
-                .addGap(21, 21, 21))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addContainerGap(22, Short.MAX_VALUE)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 323, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(55, Short.MAX_VALUE)))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(18, Short.MAX_VALUE))
         );
 
         pack();
@@ -209,7 +257,11 @@ public class ChatScreen extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JEditorPane jEditorPane1;
+    private javax.swing.JEditorPane jEditorPane2;
+    private javax.swing.JEditorPane jEditorPane3;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
 }

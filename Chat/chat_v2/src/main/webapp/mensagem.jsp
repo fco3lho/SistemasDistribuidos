@@ -40,7 +40,7 @@
         if(request.getParameter("btnEnviar")!=null){
             String msg="";
             try {
-                rmiWebInterface objRmi = (rmiWebInterface)Naming.lookup("rmi://127.0.0.1:6666/servidorWebChat");
+                rmiWebInterface objRmi = (rmiWebInterface)Naming.lookup("rmi://localhost:6666/servidorWebChat");
                 
                 if(!objRmi.gravaMsg(msg)){
                     out.print("Erro salvando a mensagem");

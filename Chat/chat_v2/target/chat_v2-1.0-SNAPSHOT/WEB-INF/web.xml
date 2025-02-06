@@ -8,4 +8,12 @@
             30
         </session-timeout>
     </session-config>
+    <servlet>
+        <servlet-name>MulticastReceiverServlet</servlet-name>
+        <servlet-class>MulticastReceiverServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>MulticastReceiverServlet</servlet-name>
+        <url-pattern>/receiveMessage</url-pattern>
+    </servlet-mapping>
 </web-app>
