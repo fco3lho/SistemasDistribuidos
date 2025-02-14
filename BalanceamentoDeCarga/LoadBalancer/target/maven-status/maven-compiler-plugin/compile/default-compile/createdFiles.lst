@@ -1,0 +1,7 @@
+pacote\Worker1.class
+pacote\Main.class
+pacote\Worker2.class
+pacote\WorkerInterface.class
+pacote\LoadBalancer.class
+pacote\LoadBalancerInterface.class
+pacote\Worker3.class

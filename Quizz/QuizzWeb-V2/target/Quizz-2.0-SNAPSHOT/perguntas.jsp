@@ -22,7 +22,7 @@
 
         String respostaAnterior = request.getParameter("resposta");
         try {
-            QuizService servidor = (QuizService) Naming.lookup("rmi://127.0.0.1:6789/servidorQuiz");
+            QuizService servidor = (QuizService) Naming.lookup("rmi://localhost:6789/servidorQuiz");
 
             if (respostaAnterior != null && servidor.verificarResposta(perguntaAtual - 1, respostaAnterior)) {
                 pontuacao++;

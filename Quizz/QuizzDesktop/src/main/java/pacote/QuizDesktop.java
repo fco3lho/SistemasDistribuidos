@@ -20,7 +20,7 @@ public class QuizDesktop extends javax.swing.JFrame {
 
     private void conectarServidor() {
         try {
-            servidor = (QuizService) Naming.lookup("rmi://127.0.0.1:6789/servidorQuiz");
+            servidor = (QuizService) Naming.lookup("rmi://localhost:6789/servidorQuiz");
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Erro ao conectar com o servidor: " + e.getMessage());
             System.exit(0);

@@ -24,7 +24,7 @@
         // Salva a pontuação no arquivo de ranking
         String msg = nome + ":" + pontuacao;
         try {
-            QuizService objRmi = (QuizService)Naming.lookup("rmi://127.0.0.1:6789/servidorQuiz");
+            QuizService objRmi = (QuizService)Naming.lookup("rmi://localhost:6789/servidorQuiz");
             
             if(!objRmi.atualizaRanking(msg)){
                 out.print("Erro atualizando ranking.");
@@ -38,7 +38,7 @@
         List<String[]> ranking = new ArrayList<>();
         
         try {
-            QuizService objRmi = (QuizService)Naming.lookup("rmi://127.0.0.1:6789/servidorQuiz");
+            QuizService objRmi = (QuizService)Naming.lookup("rmi://localhost:6789/servidorQuiz");
             ranking = objRmi.recuperaRanking();
         } catch (Exception e) {
             out.print("Erro no servidor ao recuperar ranking: " + e.getMessage());
