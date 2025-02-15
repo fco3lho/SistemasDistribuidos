@@ -38,7 +38,7 @@ public class Main {
             System.out.println("Workers vinculados no RMI Registry.");
             
             // Cria e vincula o Load Balancer
-            LoadBalancer lb = new LoadBalancer();
+            LoadBalancer lb = new LoadBalancer("random");
             registry.rebind("loadBalancer", lb);
             
             System.out.println("Load Balancer vinculado no RMI Registry.");            
