@@ -6,6 +6,7 @@ package pacote;
 
 import java.rmi.Naming;
 import java.util.Scanner;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -14,8 +15,10 @@ import java.util.Scanner;
 public class Client {
     public static void main(String[] args) {
         try {
-            // Realiza o lookup do load balancer
-            LoadBalancerInterface lb = (LoadBalancerInterface) Naming.lookup("rmi://localhost:4567/loadBalancer");
+            String serverAddress = JOptionPane.showInputDialog(
+                "Digite o endereço de IP do servidor:");
+            
+            LoadBalancerInterface lb = (LoadBalancerInterface) Naming.lookup("rmi://" + serverAddress + ":4567/loadBalancer");
             System.out.println("Conectado ao Load Balancer.");
             
             Scanner scanner = new Scanner(System.in);
