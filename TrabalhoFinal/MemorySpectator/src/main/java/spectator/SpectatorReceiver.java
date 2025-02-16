@@ -2,25 +2,25 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package client;
+package spectator;
 
+import javax.swing.JOptionPane;
 import java.io.BufferedReader;
 import java.io.IOException;
-import javax.swing.JOptionPane;
 
 /**
  *
  * @author Felipe Campos
  */
-public class ClientReceiver implements Runnable {
+public class SpectatorReceiver implements Runnable {
     private BufferedReader in;
-    private MemoryGUI gui;
-
-    public ClientReceiver(BufferedReader in, MemoryGUI gui) {
+    private SpectatorGUI gui;
+    
+    public SpectatorReceiver(BufferedReader in, SpectatorGUI gui) {
         this.in = in;
         this.gui = gui;
     }
-
+    
     @Override
     public void run() {
         String line;
@@ -64,7 +64,6 @@ public class ClientReceiver implements Runnable {
                     }
                     String errorMsg = msg.toString().trim();
                     System.out.println("Erro: " + errorMsg);
-                    // Se o erro indicar que já há dois jogadores, exibe o popup e fecha o client.
                     if (errorMsg.equals("Já existem dois jogadores nesta partida")) {
                         javax.swing.SwingUtilities.invokeLater(() -> {
                             JOptionPane.showMessageDialog(gui, errorMsg, "Erro", JOptionPane.ERROR_MESSAGE);

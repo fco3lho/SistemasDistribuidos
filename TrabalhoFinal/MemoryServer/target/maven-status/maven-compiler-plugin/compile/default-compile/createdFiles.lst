@@ -1,3 +1,4 @@
 server\PlayerHandler.class
-server\MemoryServer.class
+server\SpectatorHandler.class
 server\MemoryGame.class
+server\MemoryServer.class

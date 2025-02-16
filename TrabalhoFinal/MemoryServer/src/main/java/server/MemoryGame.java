@@ -42,7 +42,6 @@ public class MemoryGame {
     }
 
     private void initializeBoard() {
-        // Cria os pares (exemplo: para 10 pares, o total de cartas deve ser 20, por exemplo, 4x5)
         List<Integer> values = new ArrayList<>();
         int pairs = (rows * cols) / 2;
         for (int i = 1; i <= pairs; i++) {
